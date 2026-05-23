@@ -21,7 +21,6 @@ jobs:
         working-directory: si_image_processing_lab
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -31,13 +30,18 @@ jobs:
           python-version: "3.11"
 
       - name: Install Poetry
-        run: pip install poetry
+        run: python -m pip install poetry
 
       - name: Install dependencies
-        run: poetry install
+        run: python -m poetry install
 
       - name: Run Ruff
         run: poetry run ruff check .
 
       - name: Run Tests
         run: poetry run pytest
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
